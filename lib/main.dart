@@ -5,16 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:todo_app/core/theme/app_theme.dart';
+import 'package:todo_app/features/auth/presentation/pages/signin_page.dart';
+
+import 'init_dependecies.dart';
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-        apiKey: "IzaSyBEu_OPJjO1SuRmd0RYpFZlr1muwe0D8uI",
-        appId: "1:1001659969527:android:dcfb2553b800e6d70888f2",
-        messagingSenderId: "1001659969527",
-        projectId: "todoapp-25cfc"),
-  );
+  initDependencies();
   runApp(const MyApp());
 }
 
@@ -39,10 +37,9 @@ class _MyAppState extends State<MyApp> {
       Brightness.dark, // Icon brightness for both Android and iOS
     ));
     return GetMaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(),
-      ),
+      theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      home: const SignInPage()
     );
   }
 }
