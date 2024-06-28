@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/core/secrets/app_secrets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
@@ -16,12 +17,17 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
 
+  final envInit = await dotenv.load(fileName: ".env");
+
+  serviceLocator.registerSingleton(() => envInit);
+
   final firebaseInit = await Firebase.initializeApp(
-    options: const FirebaseOptions(
-        apiKey: AppSecrets.apiKey,
-        appId: AppSecrets.appId,
-        messagingSenderId: AppSecrets.messagingSenderId,
-        projectId: AppSecrets.projectId),
+    options: FirebaseOptions(
+        apiKey: dotenv.env['API_KEY']!,
+        appId: dotenv.env['APP_ID']!,
+        messagingSenderId: dotenv.env['MESSAGING_SENDER_ID']!,
+        projectId: dotenv.env['PROJECT_ID']!,
+    )
   );
 
   final sharedPreferences = await SharedPreferences.getInstance();
